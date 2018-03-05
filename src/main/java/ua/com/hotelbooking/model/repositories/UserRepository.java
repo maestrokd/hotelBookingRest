@@ -7,7 +7,4 @@ import ua.com.hotelbooking.model.entities.User;
 public interface UserRepository extends JpaRepository<User, Long> {
 
     User findByLogin(String login);
-
-
-
 }

@@ -26,12 +26,16 @@ public class Room {
     private float price;
 
     @JsonBackReference
-    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, orphanRemoval = true, mappedBy = "user", fetch = FetchType.EAGER)
+    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, orphanRemoval = true, mappedBy = "room", fetch = FetchType.EAGER)
     private List<Booking> bookingList = new ArrayList<>();
 
+
+    // Constructors
     public Room() {
     }
 
+
+    // Getters and Setters
     public Long getId() {
         return id;
     }

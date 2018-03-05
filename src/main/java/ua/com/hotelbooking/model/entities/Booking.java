@@ -44,9 +44,13 @@ public class Booking {
             inverseJoinColumns = @JoinColumn(name = "additional_option_id"))
     private Set<AdditionalOption> additionalOptions= new HashSet<>();
 
+
+    // Constructors
     public Booking() {
     }
 
+
+    // Getters and Setters
     public Long getId() {
         return id;
     }

@@ -1,10 +1,13 @@
 package ua.com.hotelbooking.controllers;
 
+import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import ua.com.hotelbooking.model.dto.AssemblerDate;
 import ua.com.hotelbooking.model.dto.BookingDTO;
+import ua.com.hotelbooking.model.dto.UserDTO;
 import ua.com.hotelbooking.model.entities.Booking;
 import ua.com.hotelbooking.model.entities.Room;
 import ua.com.hotelbooking.model.entities.User;
@@ -18,6 +21,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
+@Api(value = "bookingsgateway", description = "Holel booking related operations")
 public class AppController {
 
     @Autowired
@@ -28,23 +32,20 @@ public class AppController {
     private RoomService roomService;
 
 
-    // 1
+    /**
+     * 1. View list of available rooms (room have a number, category, price, additional options
+     * like breakfast, cleaning with additional cost) for specified dates.
+     */
     @RequestMapping(
             value = "/api/freerooms/{startBookingDate}/{endBookingDate}"
             , method = RequestMethod.GET
             , headers = {"Accept=application/json"})
-    public ResponseEntity<List<Room>> getFreeRoomsByDate(@PathVariable("startBookingDate") String startBookingDateS, @PathVariable("endBookingDate") String endBookingDateS) {
+    public ResponseEntity<List<Room>> getFreeRoomsByDate(
+            @PathVariable("startBookingDate") String startBookingDateStr,
+            @PathVariable("endBookingDate") String endBookingDateStr) {
 
-        // TODO in other method
-        Date startBookingDate = null;
-        Date endBookingDate  = null;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        try {
-            startBookingDate = simpleDateFormat.parse(startBookingDateS);
-            endBookingDate = simpleDateFormat.parse(endBookingDateS);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        Date startBookingDate = AssemblerDate.getInstance().getDateByString(startBookingDateStr);
+        Date endBookingDate  = AssemblerDate.getInstance().getDateByString(endBookingDateStr);
 
         List<Room> roomList = roomService.getAvailableRoomsByDate(startBookingDate, endBookingDate);
         if (roomList != null) {
@@ -54,7 +55,9 @@ public class AppController {
     }
 
 
-    // 2
+    /**
+     * 2. View rooms filtered by category.
+     */
     @RequestMapping(
             value = "/api/roomsbycategory/{category}"
             , method = RequestMethod.GET
@@ -68,13 +71,15 @@ public class AppController {
     }
 
 
-    // 3
+    /**
+     * 3. Create user.
+     */
     @PostMapping
             (value = "/api/usercreate", headers = {"Accept=application/json; charset=utf-8"})
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
-    public String createUser(@RequestBody User user) {
-        User userFromDB = userService.createUser(user);
+    public String createUser(@RequestBody UserDTO userDTO) {
+        User userFromDB = userService.createUser(userDTO);
         if (userFromDB != null) {
             return "User created successfully";
         }
@@ -82,7 +87,9 @@ public class AppController {
     }
 
 
-    // 4
+    /**
+     * 4. User can book the room for specified days.
+     */
     @PostMapping
             (value = "/api/bookingcreate", headers = {"Accept=application/json; charset=utf-8"})
     @ResponseStatus(HttpStatus.CREATED)
@@ -96,7 +103,9 @@ public class AppController {
     }
 
 
-    // 5
+    /**
+     * 5. User can view his booking.
+     */
     @RequestMapping(
             value = "/api/bookingsbyuser/{userlogin}"
             , method = RequestMethod.GET
@@ -110,7 +119,9 @@ public class AppController {
     }
 
 
-    // 6
+    /**
+     * 6. User can get the total price of the booking (room for dates period + cost of additional options).
+     */
     @PostMapping
             (value = "/api/bookingtotalprice", headers = {"Accept=application/json; charset=utf-8"})
     @ResponseStatus(HttpStatus.OK)
@@ -121,7 +132,9 @@ public class AppController {
     }
 
 
-    // 7
+    /**
+     * 7. View all bookings for the hotel.
+     */
     @RequestMapping(
             value = "/api/bookings"
             , method = RequestMethod.GET
@@ -134,23 +147,16 @@ public class AppController {
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
+
     // +8
     @RequestMapping(
             value = "/api/bookings/{startBookingDate}/{endBookingDate}"
             , method = RequestMethod.GET
             , headers = {"Accept=application/json"})
-    public ResponseEntity<List<Booking>> getBookingsByDate(@PathVariable("startBookingDate") String startBookingDateS, @PathVariable("endBookingDate") String endBookingDateS) {
+    public ResponseEntity<List<Booking>> getBookingsByDate(@PathVariable("startBookingDate") String startBookingDateStr, @PathVariable("endBookingDate") String endBookingDateStr) {
 
-        // TODO in other method
-        Date startBookingDate = null;
-        Date endBookingDate  = null;
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
-        try {
-            startBookingDate = simpleDateFormat.parse(startBookingDateS);
-            endBookingDate = simpleDateFormat.parse(endBookingDateS);
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+        Date startBookingDate = AssemblerDate.getInstance().getDateByString(startBookingDateStr);
+        Date endBookingDate  = AssemblerDate.getInstance().getDateByString(endBookingDateStr);
 
         List<Booking> bookingList = bookingService.getBookingByDate(startBookingDate, endBookingDate);
         if (bookingList != null) {

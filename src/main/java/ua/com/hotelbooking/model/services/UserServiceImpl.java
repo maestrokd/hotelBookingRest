@@ -2,6 +2,7 @@ package ua.com.hotelbooking.model.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import ua.com.hotelbooking.model.dto.UserDTO;
 import ua.com.hotelbooking.model.entities.Booking;
 import ua.com.hotelbooking.model.entities.User;
 import ua.com.hotelbooking.model.repositories.BookingRepository;
@@ -22,12 +23,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(User user) {
+    public User createUser(UserDTO userDTO) {
 
         // TODO User is exist?
-        if(this.isUserExist(user.getLogin())){
+        if(this.isUserExist(userDTO.getLogin())){
             return null;
         }
+        User user = this.makeUser(userDTO);
         return userRepository.save(user);
     }
 
@@ -38,5 +40,14 @@ public class UserServiceImpl implements UserService {
             return true;
         }
         return false;
+    }
+
+    @Override
+    public User makeUser(UserDTO userDTO) {
+        User user = new User();
+        user.setLogin(userDTO.getLogin());
+        user.setPassword(userDTO.getPassword());
+        user.setName(userDTO.getName());
+        return user;
     }
 }

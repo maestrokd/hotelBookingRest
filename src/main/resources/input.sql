@@ -1,0 +1,5 @@
+INSERT INTO additional_options (price, title)	VALUES (50, 'breakfast'),	(100, 'cleaning');
+INSERT INTO rooms	(category, number, price)	VALUES ('A', 1, 500),	('A', 2, 500), ('A', 3, 500),	('A', 4, 500),	('B', 5, 800),	('B', 6, 800),	('B', 7, 800),	('C', 8, 1000),	('C', 9, 1000),	('C', 10, 1000);
+INSERT INTO users (login, name, password)	VALUES ('user1', 'Name1', 'pass1'),	('user2', 'Name2', 'pass2'),	('user3', 'Name3', 'pass3');
+INSERT INTO bookings (USER_ID, ROOM_ID, START_BOOKING_DATE, END_BOOKING_DATE)	VALUES (1, 2, PARSEDATETIME('2018 03 10', 'yyyy MM dd'), PARSEDATETIME('2018 03 10', 'yyyy MM dd')),	(2, 3, PARSEDATETIME('2018 03 10', 'yyyy MM dd'), PARSEDATETIME('2018 03 10', 'yyyy MM dd')), (3, 4, PARSEDATETIME('2018 03 10', 'yyyy MM dd'), PARSEDATETIME('2018 03 10', 'yyyy MM dd')), (1, 7, PARSEDATETIME('2018 03 12', 'yyyy MM dd'), PARSEDATETIME('2018 03 14', 'yyyy MM dd'));
+INSERT INTO BOOKINGS_ADDITIONAL_OPTIONS (BOOKING_ID, ADDITIONAL_OPTION_ID)	VALUES (1, 1),	(1, 2),	(3, 1),	(4, 1),	(4, 2);

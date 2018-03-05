@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+                   xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+                   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
+                   http://www.liquibase.org/xml/ns/dbchangelog
+                   http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
+    <changeSet author="maestro (generated)" id="1519941768730-1">
+        <createTable tableName="ADDITIONAL_OPTIONS">
+            <column autoIncrement="true" name="ID" type="BIGINT(19)">
+                <constraints primaryKey="true" primaryKeyName="CONSTRAINT_3"/>
+            </column>
+            <column name="PRICE" type="DOUBLE(17)"/>
+            <column name="TITLE" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="maestro (generated)" id="1519941768730-2">
+        <createTable tableName="BOOKINGS">
+            <column autoIncrement="true" name="ID" type="BIGINT(19)">
+                <constraints primaryKey="true" primaryKeyName="CONSTRAINT_A"/>
+            </column>
+            <column name="END_BOOKING_DATE" type="TIMESTAMP"/>
+            <column name="START_BOOKING_DATE" type="TIMESTAMP"/>
+            <column name="ROOM_ID" type="BIGINT(19)"/>
+            <column name="USER_ID" type="BIGINT(19)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="maestro (generated)" id="1519941768730-3">
+        <createTable tableName="BOOKINGS_ADDITIONAL_OPTIONS">
+            <column name="BOOKING_ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="ADDITIONAL_OPTION_ID" type="BIGINT(19)">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+    <changeSet author="maestro (generated)" id="1519941768730-4">
+        <createTable tableName="ROOMS">
+            <column autoIncrement="true" name="ID" type="BIGINT(19)">
+                <constraints primaryKey="true" primaryKeyName="CONSTRAINT_4"/>
+            </column>
+            <column name="CATEGORY" type="VARCHAR(255)"/>
+            <column name="NUMBER" type="INT(10)"/>
+            <column name="PRICE" type="DOUBLE(17)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="maestro (generated)" id="1519941768730-5">
+        <createTable tableName="USERS">
+            <column autoIncrement="true" name="ID" type="BIGINT(19)">
+                <constraints primaryKey="true" primaryKeyName="CONSTRAINT_4D"/>
+            </column>
+            <column name="LOGIN" type="VARCHAR(255)"/>
+            <column name="NAME" type="VARCHAR(255)"/>
+            <column name="PASSWORD" type="VARCHAR(255)"/>
+        </createTable>
+    </changeSet>
+    <changeSet author="maestro (generated)" id="1519941768730-6">
+        <addPrimaryKey columnNames="BOOKING_ID, ADDITIONAL_OPTION_ID" constraintName="CONSTRAINT_3D" tableName="BOOKINGS_ADDITIONAL_OPTIONS"/>
+    </changeSet>
+    <changeSet author="maestro (generated)" id="1519941768730-7">
+        <createIndex indexName="FKEYOG2OIC85XG7HSU2JE2LX3S6_INDEX_A" tableName="BOOKINGS">
+            <column name="USER_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="maestro (generated)" id="1519941768730-8">
+        <createIndex indexName="FKLMPARICY3YFYCVR9IP2W4LIDO_INDEX_3" tableName="BOOKINGS_ADDITIONAL_OPTIONS">
+            <column name="ADDITIONAL_OPTION_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="maestro (generated)" id="1519941768730-9">
+        <createIndex indexName="FKRGOYCOL97O21KPJODW1QOX4NC_INDEX_A" tableName="BOOKINGS">
+            <column name="ROOM_ID"/>
+        </createIndex>
+    </changeSet>
+    <changeSet author="maestro (generated)" id="1519941768730-10">
+        <addForeignKeyConstraint baseColumnNames="BOOKING_ID" baseTableName="BOOKINGS_ADDITIONAL_OPTIONS" constraintName="FK51TDRDPSNO5UJMEPXJCFSGAU6" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="BOOKINGS"/>
+    </changeSet>
+    <changeSet author="maestro (generated)" id="1519941768730-11">
+        <addForeignKeyConstraint baseColumnNames="USER_ID" baseTableName="BOOKINGS" constraintName="FKEYOG2OIC85XG7HSU2JE2LX3S6" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="USERS"/>
+    </changeSet>
+    <changeSet author="maestro (generated)" id="1519941768730-12">
+        <addForeignKeyConstraint baseColumnNames="ADDITIONAL_OPTION_ID" baseTableName="BOOKINGS_ADDITIONAL_OPTIONS" constraintName="FKLMPARICY3YFYCVR9IP2W4LIDO" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="ADDITIONAL_OPTIONS"/>
+    </changeSet>
+    <changeSet author="maestro (generated)" id="1519941768730-13">
+        <addForeignKeyConstraint baseColumnNames="ROOM_ID" baseTableName="BOOKINGS" constraintName="FKRGOYCOL97O21KPJODW1QOX4NC" deferrable="false" initiallyDeferred="false" onDelete="RESTRICT" onUpdate="RESTRICT" referencedColumnNames="ID" referencedTableName="ROOMS"/>
+    </changeSet>
+    <changeSet author="maestro (generated)" id="1519941768730-14">
+        <sqlFile dbms="h2, oracle"
+                 encoding="utf8"
+                 endDelimiter="\n"
+                 path="input.sql"
+                 relativeToChangelogFile="true"
+                 splitStatements="true"
+                 stripComments="true"/>
+    </changeSet>
+</databaseChangeLog>

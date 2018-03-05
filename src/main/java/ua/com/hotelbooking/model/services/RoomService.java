@@ -1,6 +1,5 @@
 package ua.com.hotelbooking.model.services;
 
-import ua.com.hotelbooking.model.entities.Booking;
 import ua.com.hotelbooking.model.entities.Room;
 
 import java.util.Date;

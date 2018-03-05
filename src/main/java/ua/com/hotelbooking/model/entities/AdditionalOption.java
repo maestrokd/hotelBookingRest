@@ -18,9 +18,13 @@ public class AdditionalOption {
     @Column(name = "price")
     private float price;
 
+
+    // Constructors
     public AdditionalOption() {
     }
 
+
+    // Getters and Setters
     public Long getId() {
         return id;
     }

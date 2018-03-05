@@ -31,9 +31,19 @@ public class User {
     @OneToMany(mappedBy = "user", cascade = {CascadeType.REMOVE, CascadeType.MERGE, CascadeType.REFRESH}, orphanRemoval = true, fetch = FetchType.EAGER)
     private List<Booking> bookingList = new ArrayList<>();
 
+
+    // Constructors
     public User() {
     }
 
+    public User(String login, String password, String name) {
+        this.login = login;
+        this.password = password;
+        this.name = name;
+    }
+
+
+    // Getters and Setters
     public Long getId() {
         return id;
     }
