@@ -1,5 +1,7 @@
 package ua.com.hotelbooking.model.dto;
 
+import java.util.Arrays;
+
 public class BookingDTO {
 
     // Fields
@@ -62,5 +64,32 @@ public class BookingDTO {
 
     public void setAdditionalOptions(String[] additionalOptions) {
         this.additionalOptions = additionalOptions;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        BookingDTO that = (BookingDTO) o;
+
+        if (userLogin != null ? !userLogin.equals(that.userLogin) : that.userLogin != null) return false;
+        if (roomNumber != null ? !roomNumber.equals(that.roomNumber) : that.roomNumber != null) return false;
+        if (startBookingDate != null ? !startBookingDate.equals(that.startBookingDate) : that.startBookingDate != null)
+            return false;
+        if (endBookingDate != null ? !endBookingDate.equals(that.endBookingDate) : that.endBookingDate != null)
+            return false;
+        // Probably incorrect - comparing Object[] arrays with Arrays.equals
+        return Arrays.equals(additionalOptions, that.additionalOptions);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = userLogin != null ? userLogin.hashCode() : 0;
+        result = 31 * result + (roomNumber != null ? roomNumber.hashCode() : 0);
+        result = 31 * result + (startBookingDate != null ? startBookingDate.hashCode() : 0);
+        result = 31 * result + (endBookingDate != null ? endBookingDate.hashCode() : 0);
+        result = 31 * result + Arrays.hashCode(additionalOptions);
+        return result;
     }
 }

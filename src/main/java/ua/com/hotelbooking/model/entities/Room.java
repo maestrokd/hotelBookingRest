@@ -34,6 +34,11 @@ public class Room {
     public Room() {
     }
 
+    public Room(int number, String category, float price) {
+        this.number = number;
+        this.category = category;
+        this.price = price;
+    }
 
     // Getters and Setters
     public Long getId() {
@@ -74,5 +79,24 @@ public class Room {
 
     public void setBookingList(List<Booking> bookingList) {
         this.bookingList = bookingList;
+    }
+
+
+    // Methods
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Room room = (Room) o;
+
+        return number == room.number;
+    }
+
+    @Override
+    public int hashCode() {
+        return number;
     }
 }

@@ -21,29 +21,26 @@ import java.util.Set;
 public class BookingServiceImpl implements BookingService {
 
     // Fields
-    @Autowired
     private BookingRepository bookingRepository;
-    @Autowired
     private UserRepository userRepository;
-    @Autowired
     private RoomRepository roomRepository;
-    @Autowired
     private AdditionalOptionRepository additionalOptionRepository;
 
 
     // Getters and Setters
+    @Autowired
     public void setBookingRepository(BookingRepository bookingRepository) {
         this.bookingRepository = bookingRepository;
     }
-
+    @Autowired
     public void setUserRepository(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
-
+    @Autowired
     public void setRoomRepository(RoomRepository roomRepository) {
         this.roomRepository = roomRepository;
     }
-
+    @Autowired
     public void setAdditionalOptionRepository(AdditionalOptionRepository additionalOptionRepository) {
         this.additionalOptionRepository = additionalOptionRepository;
     }
@@ -70,6 +67,39 @@ public class BookingServiceImpl implements BookingService {
 
         Booking booking = this.makeBooking(bookingDTO);
 
+        if (!this.validateBooking(booking)) {
+            return null;
+        }
+
+        return bookingRepository.save(booking);
+    }
+
+
+    private boolean validateBooking(Booking booking) {
+        if(booking == null){
+            return false;
+        }
+
+        if(booking.getUser() == null) {
+            return false;
+        }
+
+        List<Booking> bookingList = bookingRepository.findBookingsByRoomWhereStartBookingDateOrEndBookingDateBetweenDates(
+                booking.getRoom(), booking.getStartBookingDate(), booking.getEndBookingDate());
+
+        if(!bookingList.isEmpty()) {
+            return false;
+        }
+
+        return true;
+    }
+
+
+    @Deprecated
+    public Booking createBookingOld(BookingDTO bookingDTO) {
+
+        Booking booking = this.makeBooking(bookingDTO);
+
         // TODO send message about invalid parameter
         if(booking == null){
             return null;
@@ -81,11 +111,17 @@ public class BookingServiceImpl implements BookingService {
         }
 
         // TODO if booking the room for this date exist
-        List<Booking> bookingList = bookingRepository.findByStartBookingDateBetweenOrEndBookingDateBetween(booking.getStartBookingDate(), booking.getEndBookingDate(), booking.getStartBookingDate(), booking.getEndBookingDate());
+        List<Booking> bookingList = bookingRepository.findByStartBookingDateBetweenOrEndBookingDateBetween(
+                booking.getStartBookingDate(), booking.getEndBookingDate(),
+                booking.getStartBookingDate(), booking.getEndBookingDate());
+
+        System.out.println("bookingList. size: " + bookingList.size());
+
         for(Booking b : bookingList) {
 
             // TODO send message "the room already booked"
             if(b.getRoom().getNumber() == booking.getRoom().getNumber()) {
+                System.out.println("Come Null");
                 return null;
             }
         }
@@ -96,17 +132,17 @@ public class BookingServiceImpl implements BookingService {
 
     @Override
     public float getBookingTotalPrice(BookingDTO bookingDTO) {
-
+        float totalPrice;
+        int numberOfDays;
         Booking booking = this.makeBooking(bookingDTO);
 
-        // TODO send message about invalid parameter
         if(booking == null){
             return -1;
         }
 
         // TODO New version without deprecated methods
-        int numberOfDays = (booking.getEndBookingDate().getDate()-booking.getStartBookingDate().getDate()) + 1;
-        float totalPrice;
+        numberOfDays = (booking.getEndBookingDate().getDate()-booking.getStartBookingDate().getDate()) + 1;
+
         totalPrice = booking.getRoom().getPrice();
         for (AdditionalOption additionalOption : booking.getAdditionalOptions()) {
             totalPrice += additionalOption.getPrice();
@@ -115,16 +151,17 @@ public class BookingServiceImpl implements BookingService {
         return totalPrice;
     }
 
-    @Override
+
     public Booking makeBooking(BookingDTO bookingDTO) {
         Booking booking = new Booking();
+
         if (bookingDTO.getUserLogin() != null) {
-            User user = userRepository.findByLogin(bookingDTO.getUserLogin());
+            String userLogin = bookingDTO.getUserLogin();
+            User user = userRepository.findByLogin(userLogin);
             booking.setUser(user);
         }
         Room room = roomRepository.findByNumber(Integer.parseInt(bookingDTO.getRoomNumber()));
 
-        // TODO send message "the room does not exist"
         if(room == null ){
             return null;
         }
@@ -136,12 +173,9 @@ public class BookingServiceImpl implements BookingService {
             Set<AdditionalOption> additionalOptionSet = new HashSet<>();
             for (String str : bookingDTO.getAdditionalOptions()){
                 AdditionalOption additionalOption = additionalOptionRepository.findByTitle(str);
-
-                // TODO send message "the additional option does not exist"
                 if(additionalOption == null){
                     return null;
                 }
-
                 additionalOptionSet.add(additionalOption);
             }
             booking.setAdditionalOptions(additionalOptionSet);

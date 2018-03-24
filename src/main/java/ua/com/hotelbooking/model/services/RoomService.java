@@ -10,7 +10,7 @@ public interface RoomService {
 
     public List<Room> getAllRoomsByCategory(String category);
 
-    public List<Room> getAvailableRoomsByDate(Date startBookingDate, Date endBookingDate);
+    public List<Room> getAvailableRoomsByStartBookingDateAndEndBookingDate(Date startBookingDate, Date endBookingDate);
 
 
 }

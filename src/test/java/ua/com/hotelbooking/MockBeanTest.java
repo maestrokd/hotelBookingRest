@@ -1,6 +1,5 @@
-package ua.com.hotelbooking.tests;
+package ua.com.hotelbooking;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,7 +9,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
-
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -27,7 +25,6 @@ public class MockBeanTest {
     private MockMvc mockMvc;
 
 
-
     @Test
     public void getNotFoundPage() throws Exception {
         mockMvc.perform(get("/notfoundpage"))
@@ -37,7 +34,6 @@ public class MockBeanTest {
 
     @Test
     public void getAllBooking() throws Exception {
-        ObjectMapper objectMapper = new ObjectMapper();
        MvcResult mvcResult = mockMvc
                 .perform(get("/api/bookings"))
                 .andDo(print())

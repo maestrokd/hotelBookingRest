@@ -5,7 +5,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import ua.com.hotelbooking.controllers.AppController;
+import ua.com.hotelbooking.controllers.BookingController;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -14,12 +14,12 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class ApplicationTests {
 
     @Autowired
-    private AppController appController;
+    private BookingController bookingController;
 
 
     @Test
     public void contextLoads() throws Exception {
-        assertThat(appController).isNotNull();
+        assertThat(bookingController).isNotNull();
     }
 
 

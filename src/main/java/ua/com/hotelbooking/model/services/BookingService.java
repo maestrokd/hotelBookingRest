@@ -18,5 +18,4 @@ public interface BookingService {
 
     public float getBookingTotalPrice(BookingDTO bookingDTO);
 
-    public Booking makeBooking(BookingDTO bookingDTO);
 }

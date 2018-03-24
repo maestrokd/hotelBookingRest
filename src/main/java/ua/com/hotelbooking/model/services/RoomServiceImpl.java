@@ -6,7 +6,6 @@ import ua.com.hotelbooking.model.entities.Booking;
 import ua.com.hotelbooking.model.entities.Room;
 import ua.com.hotelbooking.model.repositories.BookingRepository;
 import ua.com.hotelbooking.model.repositories.RoomRepository;
-import ua.com.hotelbooking.model.repositories.RoomRepositoryImpl;
 
 import java.util.Date;
 import java.util.List;
@@ -15,12 +14,20 @@ import java.util.List;
 public class RoomServiceImpl implements RoomService {
 
     // Fields
-    @Autowired
     private RoomRepository roomRepository;
-    @Autowired
-    private RoomRepositoryImpl roomRepositoryImpl;
-    @Autowired
     private BookingRepository bookingRepository;
+
+
+    // Getters and Setters
+    @Autowired
+    public void setRoomRepository(RoomRepository roomRepository) {
+        this.roomRepository = roomRepository;
+    }
+
+    @Autowired
+    public void setBookingRepository(BookingRepository bookingRepository) {
+        this.bookingRepository = bookingRepository;
+    }
 
 
     // Methods
@@ -29,24 +36,38 @@ public class RoomServiceImpl implements RoomService {
         return roomRepository.findAll();
     }
 
+
     @Override
     public List<Room> getAllRoomsByCategory(String category) {
         return roomRepository.findRoomsByCategory(category);
     }
 
-    @Override
-    public List<Room> getAvailableRoomsByDate(Date startBookingDate, Date endBookingDate) {
 
-        // TODO One request with LEFT JOIN to the database (in RoomRepositoryImpl)
+    @Override
+    public List<Room> getAvailableRoomsByStartBookingDateAndEndBookingDate(Date startBookingDate, Date endBookingDate) {
+        List<Room> roomList2 = roomRepository.findFreeRoomsByStartBookingDateAndEndBookingDate(startBookingDate, endBookingDate);
+        return roomList2;
+    }
+
+
+    @Deprecated
+    public List<Room> getAvailableRoomsByStartBookingDateAndEndBookingDateOld(Date startBookingDate, Date endBookingDate) {
+
+        // TODO One request with LEFT JOIN to the database (at RoomRepositoryImpl)
         List<Room> roomList = this.getAllRooms();
         List<Booking> bookingList = bookingRepository.findByStartBookingDateBetweenOrEndBookingDateBetween(startBookingDate, endBookingDate, startBookingDate, endBookingDate);
-        System.out.println("Size bookingList: " + bookingList.size());
+
         for (Booking booking : bookingList) {
             Room roomTemp = booking.getRoom();
             if (roomList.contains(roomTemp)) {
                 roomList.remove(roomTemp);
             }
         }
+
+        // Second version
+        List<Room> roomList2 = roomRepository.findFreeRoomsByStartBookingDateAndEndBookingDate(startBookingDate, endBookingDate);
+
         return roomList;
     }
+
 }

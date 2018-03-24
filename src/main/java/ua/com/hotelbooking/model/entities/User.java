@@ -42,6 +42,13 @@ public class User {
         this.name = name;
     }
 
+    public User(String login, String password, String name, List<Booking> bookingList) {
+        this.login = login;
+        this.password = password;
+        this.name = name;
+        this.bookingList = bookingList;
+    }
+
 
     // Getters and Setters
     public Long getId() {

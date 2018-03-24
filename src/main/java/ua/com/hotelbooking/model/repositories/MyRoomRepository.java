@@ -7,12 +7,12 @@ import java.util.Date;
 import java.util.List;
 
 public interface MyRoomRepository {
-    List<Room> findByBooking_startBookingDateAndBooking_endBookingDate(
+    List<Room> findBookedRoomsByStartBookingDateAndEndBookingDate(
             @Param("startBookingDate") Date startBookingDate
             , @Param("endBookingDate") Date endBookingDate);
 
 
-    List<Room> findFreeByBooking_startBookingDateAndBooking_endBookingDate(
+    List<Room> findFreeRoomsByStartBookingDateAndEndBookingDate(
             @Param("startBookingDate") Date startBookingDate
             , @Param("endBookingDate") Date endBookingDate);
 

@@ -23,6 +23,10 @@ public class AdditionalOption {
     public AdditionalOption() {
     }
 
+    public AdditionalOption(String title, float price) {
+        this.title = title;
+        this.price = price;
+    }
 
     // Getters and Setters
     public Long getId() {

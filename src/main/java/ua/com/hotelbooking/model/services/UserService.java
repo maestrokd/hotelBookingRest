@@ -12,5 +12,4 @@ public interface UserService {
 
     public boolean isUserExist(String login);
 
-    public User makeUser(UserDTO userDTO);
 }

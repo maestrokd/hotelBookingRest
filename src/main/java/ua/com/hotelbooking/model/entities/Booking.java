@@ -49,6 +49,12 @@ public class Booking {
     public Booking() {
     }
 
+    public Booking(User user, Room room, Date startBookingDate, Date endBookingDate) {
+        this.user = user;
+        this.room = room;
+        this.startBookingDate = startBookingDate;
+        this.endBookingDate = endBookingDate;
+    }
 
     // Getters and Setters
     public Long getId() {
@@ -128,5 +134,29 @@ public class Booking {
 
     public void setAdditionalOptions(Set<AdditionalOption> additionalOptions) {
         this.additionalOptions = additionalOptions;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Booking booking = (Booking) o;
+
+        if (user != null ? !user.equals(booking.user) : booking.user != null) return false;
+        if (room != null ? !room.equals(booking.room) : booking.room != null) return false;
+        if (startBookingDate != null ? !startBookingDate.equals(booking.startBookingDate) : booking.startBookingDate != null)
+            return false;
+        return endBookingDate != null ? endBookingDate.equals(booking.endBookingDate) : booking.endBookingDate == null;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = user != null ? user.hashCode() : 0;
+        result = 31 * result + (room != null ? room.hashCode() : 0);
+        result = 31 * result + (startBookingDate != null ? startBookingDate.hashCode() : 0);
+        result = 31 * result + (endBookingDate != null ? endBookingDate.hashCode() : 0);
+        return result;
     }
 }

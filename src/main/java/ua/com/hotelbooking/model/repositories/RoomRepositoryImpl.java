@@ -10,11 +10,13 @@ import java.util.List;
 
 @Component
 public class RoomRepositoryImpl implements MyRoomRepository {
+
     @PersistenceContext
     private EntityManager entityManager;
 
+
     @Override
-    public List<Room> findByBooking_startBookingDateAndBooking_endBookingDate(Date startBookingDate, Date endBookingDate) {
+    public List<Room> findBookedRoomsByStartBookingDateAndEndBookingDate(Date startBookingDate, Date endBookingDate) {
 
         List<Room> roomList = entityManager.createQuery(
                 "SELECT r FROM ua.com.hotelbooking.model.entities.Room r "
@@ -29,52 +31,21 @@ public class RoomRepositoryImpl implements MyRoomRepository {
     }
 
 
-    // TODO Correct Query for find free rooms
     @Override
-    public List<Room> findFreeByBooking_startBookingDateAndBooking_endBookingDate(Date startBookingDate, Date endBookingDate) {
-
+    public List<Room> findFreeRoomsByStartBookingDateAndEndBookingDate(Date startBookingDate, Date endBookingDate) {
         List<Room> roomList = entityManager.createQuery(
                 "SELECT r FROM ua.com.hotelbooking.model.entities.Room r " +
-                        " LEFT JOIN r.bookingList b " +
-                        " WHERE ( " +
-                            "(" +
-                                " :startBookingDate NOT BETWEEN b.startBookingDate AND b.endBookingDate " +
-                                " AND :endBookingDate NOT BETWEEN b.startBookingDate AND b.endBookingDate" +
-                            ")" +
-                            " AND ((:startBookingDate < b.startBookingDate AND :endBookingDate < b.startBookingDate) " +
-                                " OR (:startBookingDate > b.endBookingDate AND :endBookingDate > b.endBookingDate)) " +
-                            " )" +
-                        " OR b.room IS NULL " +
-                        "GROUP BY r.id"
+                        " WHERE r.id NOT IN " +
+                        " ( SELECT b.room.id FROM ua.com.hotelbooking.model.entities.Booking b " +
+                        " WHERE  :startBookingDate BETWEEN b.startBookingDate AND b.endBookingDate " +
+                        " OR :endBookingDate BETWEEN b.startBookingDate AND b.endBookingDate" +
+                        " OR (:startBookingDate < b.startBookingDate AND :endBookingDate > b.endBookingDate) " +
+                        " )"
         )
                 .setParameter("startBookingDate", startBookingDate)
                 .setParameter("endBookingDate", endBookingDate)
                 .getResultList();
-
         return roomList;
     }
-
-//    @Override
-//    public List<Room> findFreeByBooking_startBookingDateAndBooking_endBookingDate(Date startBookingDate, Date endBookingDate) {
-//
-//        List<Room> roomList = entityManager.createQuery(
-//                "SELECT r FROM ua.com.hotelbooking.model.entities.Room r " +
-//                        " LEFT JOIN " +
-//                        "( SELECT b " +
-//                        " FROM r.bookingList b" +
-//                        " WHERE :startBookingDate  BETWEEN b.start_booking_date AND b.end_booking_date " +
-//                        " OR :endBookingDate  BETWEEN b.start_booking_date AND b.end_booking_date " +
-//                        " OR (:startBookingDate < b.start_booking_date " +
-//                        " AND :endBookingDate > b.end_booking_date) " +
-//                        ")" +
-//                        " bu " +
-//                        " WHERE bu.room IS NULL "
-//        )
-//                .setParameter("startBookingDate", startBookingDate)
-//                .setParameter("endBookingDate", endBookingDate)
-//                .getResultList();
-//
-//        return roomList;
-//    }
 
 }
