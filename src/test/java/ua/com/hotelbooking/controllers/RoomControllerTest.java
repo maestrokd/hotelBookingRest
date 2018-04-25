@@ -63,7 +63,7 @@ public class RoomControllerTest {
     @Test
     public void getRoomsByCategoryWithCorrectParam_thenOk() throws Exception {
         MvcResult mvcResult = mockMvc
-                .perform(get("/api/roomsbycategory/CorrectCategory"))
+                .perform(get("/api/rooms/findbycategory/CorrectCategory"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -75,7 +75,7 @@ public class RoomControllerTest {
     @Test
     public void getRoomsByCategoryWithInvalidParam_thenNotFound() throws Exception {
         MvcResult mvcResult = mockMvc
-                .perform(get("/api/roomsbycategory/InvalidCategory"))
+                .perform(get("/api/rooms/findbycategory/InvalidCategory"))
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andReturn()
@@ -86,7 +86,7 @@ public class RoomControllerTest {
     @Test
     public void getFreeRoomsByDate_thenOk() throws Exception {
         MvcResult mvcResult = mockMvc
-                .perform(get("/api/freerooms/01-01-2018/02-01-2018"))
+                .perform(get("/api/rooms/free/01-01-2018/02-01-2018"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andReturn()
@@ -97,7 +97,7 @@ public class RoomControllerTest {
     @Test
     public void getFreeRoomsByDate_thenNotFound() throws Exception {
         MvcResult mvcResult = mockMvc
-                .perform(get("/api/freerooms/22-02-2018/23-02-2018"))
+                .perform(get("/api/rooms/free/22-02-2018/23-02-2018"))
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andReturn()

@@ -21,7 +21,7 @@ public class UserController {
      * 3. Create user.
      */
     @PostMapping
-            (value = "/api/usercreate", headers = {"Accept=application/json; charset=utf-8"})
+            (value = "/api/users/create", headers = {"Accept=application/json; charset=utf-8"})
     @ResponseStatus(HttpStatus.CREATED)
     @ResponseBody
     public String createUser(@RequestBody UserDTO userDTO) {

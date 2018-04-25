@@ -34,11 +34,11 @@ You can see Api Documentation with List Operations and example parameters with t
 http://localhost:8080/swagger-ui.html#/
 
 There are:
-1. GET "/api/freerooms/{startBookingDate}/{endBookingDate}" where date format is like "20-12-2018"
+1. GET "/api/rooms/free/{startBookingDate}/{endBookingDate}" where date format is like "20-12-2018"
 
-2. GET "/api/roomsbycategory/{category}" where category is A or B or C
+2. GET "/api/rooms/findbycategory/{category}" where category is A or B or C
 
-3. POST "/api/usercreate"
+3. POST "/api/users/create"
 
     Example body:    
 	{
@@ -48,7 +48,7 @@ There are:
 		"name": "Name1"
 	}
 
-4. POST "/api/bookingcreate"
+4. POST "/api/bookings/create"
 
 	Example body:
 	{
@@ -63,9 +63,9 @@ There are:
                 ]
 	}
 
-5. GET "/api/bookingsbyuser/{userlogin}"
+5. GET "/api/users/{userlogin}/bookings"
 
-6. POST "/api/bookingtotalprice"
+6. POST "/api/bookings/totalprice"
 
 	Example body:
 	{

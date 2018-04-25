@@ -79,7 +79,7 @@ public class BookingControllerTest {
     @Test
     public void createBooking_thenOK() throws Exception {
         MvcResult mvcResult = mockMvc
-                .perform(post("/api/bookingcreate")
+                .perform(post("/api/bookings/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(bookingDTO)))
                 .andDo(print())
@@ -94,7 +94,7 @@ public class BookingControllerTest {
     @Test
     public void createBooking_thenBadRequest() throws Exception {
         MvcResult mvcResult = mockMvc
-                .perform(post("/api/bookingcreate")
+                .perform(post("/api/bookings/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(new BookingDTO())))
                 .andDo(print())
@@ -109,7 +109,7 @@ public class BookingControllerTest {
     @Test
     public void getBookingsByUser_thenOK() throws Exception {
         MvcResult mvcResult = mockMvc
-                .perform(get("/api/bookingsbyuser/CorrectUserName"))
+                .perform(get("/api/users/CorrectUserName/bookings"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -121,7 +121,7 @@ public class BookingControllerTest {
     @Test
     public void getBookingsByUser_thenNotFound() throws Exception {
         MvcResult mvcResult = mockMvc
-                .perform(get("/api/bookingsbyuser/IncorrectUserName"))
+                .perform(get("/api/users/IncorrectUserName/bookings"))
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andReturn()
@@ -132,7 +132,7 @@ public class BookingControllerTest {
     @Test
     public void getTotalBookingPrice_thenBadRequest() throws Exception {
         MvcResult mvcResult = mockMvc
-                .perform(post("/api/bookingtotalprice")
+                .perform(post("/api/bookings/totalprice")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(new BookingDTO())))
                 .andDo(print())
@@ -145,7 +145,7 @@ public class BookingControllerTest {
     @Test
     public void getTotalBookingPrice_thenOK() throws Exception {
         MvcResult mvcResult = mockMvc
-                .perform(post("/api/bookingtotalprice")
+                .perform(post("/api/bookings/totalprice")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(bookingDTO)))
                 .andDo(print())

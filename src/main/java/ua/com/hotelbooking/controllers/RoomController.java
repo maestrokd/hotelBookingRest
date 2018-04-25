@@ -24,7 +24,7 @@ public class RoomController {
      * like breakfast, cleaning with additional cost) for specified dates.
      */
     @RequestMapping(
-            value = "/api/freerooms/{startBookingDate}/{endBookingDate}"
+            value = "/api/rooms/free/{startBookingDate}/{endBookingDate}"
             , method = RequestMethod.GET
             , headers = {"Accept=application/json"})
     public ResponseEntity<List<Room>> getFreeRoomsByDate(
@@ -46,7 +46,7 @@ public class RoomController {
      * 2. View rooms filtered by category.
      */
     @RequestMapping(
-            value = "/api/roomsbycategory/{category}"
+            value = "/api/rooms/findbycategory/{category}"
             , method = RequestMethod.GET
             , headers = {"Accept=application/json"})
     public ResponseEntity<List<Room>> getRoomsByCategory(@PathVariable("category") String category) {

@@ -59,7 +59,7 @@ public class UserControllerTest {
     @Test
     public void createUser_thenCreatedSuccessfully() throws Exception {
         MvcResult mvcResult = mockMvc
-                .perform(post("/api/usercreate")
+                .perform(post("/api/users/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"login\":\"user1\",\"password\":\"pass1\",\"name\":\"Name1\"}"))
                 .andDo(print())
@@ -73,7 +73,7 @@ public class UserControllerTest {
     @Test
     public void createUser_thenOK2() throws Exception {
         MvcResult mvcResult = mockMvc
-                .perform(post("/api/usercreate")
+                .perform(post("/api/users/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(userDTO)))
                 .andDo(print())
@@ -87,7 +87,7 @@ public class UserControllerTest {
     @Test
     public void createUser_thenCreatedFail() throws Exception {
         MvcResult mvcResult = mockMvc
-                .perform(post("/api/usercreate")
+                .perform(post("/api/users/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"login\":\"user2\",\"password\":\"pass2\",\"name\":\"Name2\"}"))
                 .andDo(print())
@@ -101,7 +101,7 @@ public class UserControllerTest {
     @Test
     public void createUser_thenCreatedFail2() throws Exception {
         MvcResult mvcResult = mockMvc
-                .perform(post("/api/usercreate")
+                .perform(post("/api/users/create")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(new UserDTO())))
                 .andDo(print())

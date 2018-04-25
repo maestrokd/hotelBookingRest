@@ -169,7 +169,7 @@ public class BookingServiceImpl implements BookingService {
         booking.setRoom(room);
         booking.setStartBookingDateAsString(bookingDTO.getStartBookingDate());
         booking.setEndBookingDateAsString(bookingDTO.getEndBookingDate());
-        if(bookingDTO.getAdditionalOptions().length != 0) {
+        if(bookingDTO.getAdditionalOptions() != null && bookingDTO.getAdditionalOptions().length != 0) {
             Set<AdditionalOption> additionalOptionSet = new HashSet<>();
             for (String str : bookingDTO.getAdditionalOptions()){
                 AdditionalOption additionalOption = additionalOptionRepository.findByTitle(str);

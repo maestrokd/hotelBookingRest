@@ -25,7 +25,7 @@ public class BookingController {
      * 4. User can book the room for specified days.
      */
     @PostMapping
-            (value = "/api/bookingcreate", headers = {"Accept=application/json; charset=utf-8"})
+            (value = "/api/bookings/create", headers = {"Accept=application/json; charset=utf-8"})
 //    @ResponseStatus(HttpStatus.CREATED)
 //    @ResponseBody
     public ResponseEntity<String> createBooking(@RequestBody BookingDTO bookingDTO) {
@@ -41,7 +41,7 @@ public class BookingController {
      * 5. User can view his booking.
      */
     @RequestMapping(
-            value = "/api/bookingsbyuser/{userlogin}"
+            value = "/api/users/{userlogin}/bookings"
             , method = RequestMethod.GET
             , headers = {"Accept=application/json"})
     public ResponseEntity<List<Booking>> getBookingsByUser(@PathVariable("userlogin") String userlogin) {
@@ -56,7 +56,7 @@ public class BookingController {
     /**
      * 6. User can get the total price of the booking (room for dates period + cost of additional options).
      */
-    @PostMapping(value = "/api/bookingtotalprice"
+    @PostMapping(value = "/api/bookings/totalprice"
                     , headers = {"Accept=application/json; charset=utf-8"})
     public ResponseEntity<Float> getTotalBookingPrice(@RequestBody BookingDTO bookingDTO) {
         float totalPrice = bookingService.getBookingTotalPrice(bookingDTO);
