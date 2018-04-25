@@ -3,6 +3,7 @@ package ua.com.hotelbooking.controllers;
 import io.swagger.annotations.Api;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ua.com.hotelbooking.model.dto.UserDTO;
 import ua.com.hotelbooking.model.entities.User;
@@ -20,16 +21,17 @@ public class UserController {
     /**
      * 3. Create user.
      */
-    @PostMapping
-            (value = "/api/users/create", headers = {"Accept=application/json; charset=utf-8"})
-    @ResponseStatus(HttpStatus.CREATED)
-    @ResponseBody
-    public String createUser(@RequestBody UserDTO userDTO) {
+    @PostMapping(
+            value = "/api/users/create"
+            , headers = {"Accept=text/plain; charset=utf-8"}
+            )
+
+    public ResponseEntity<String> createUser(@RequestBody UserDTO userDTO) {
         User userFromDB = userService.createUser(userDTO);
         if (userFromDB != null) {
-            return "User created successfully";
+            return new ResponseEntity<>("User created successfully", HttpStatus.CREATED);
         }
-        return "User creation failed";
+        return new ResponseEntity<>("User creation failed", HttpStatus.BAD_REQUEST);
     }
 
 }

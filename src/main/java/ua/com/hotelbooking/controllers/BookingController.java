@@ -24,10 +24,9 @@ public class BookingController {
     /**
      * 4. User can book the room for specified days.
      */
-    @PostMapping
-            (value = "/api/bookings/create", headers = {"Accept=application/json; charset=utf-8"})
-//    @ResponseStatus(HttpStatus.CREATED)
-//    @ResponseBody
+    @PostMapping(
+            value = "/api/bookings/create"
+            , headers = {"Accept=text/plain; charset=utf-8"})
     public ResponseEntity<String> createBooking(@RequestBody BookingDTO bookingDTO) {
         Booking bookingDB = bookingService.createBooking(bookingDTO);
         if (bookingDB != null) {
@@ -57,13 +56,14 @@ public class BookingController {
      * 6. User can get the total price of the booking (room for dates period + cost of additional options).
      */
     @PostMapping(value = "/api/bookings/totalprice"
-                    , headers = {"Accept=application/json; charset=utf-8"})
-    public ResponseEntity<Float> getTotalBookingPrice(@RequestBody BookingDTO bookingDTO) {
+                    , headers = {"Accept=text/plain; charset=utf-8"})
+    public ResponseEntity<String> getTotalBookingPrice(@RequestBody BookingDTO bookingDTO) {
         float totalPrice = bookingService.getBookingTotalPrice(bookingDTO);
+        System.out.println(totalPrice);
         if (totalPrice == (-1)) {
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }
-        return new ResponseEntity<>(totalPrice, HttpStatus.OK);
+        return new ResponseEntity<>(totalPrice + "", HttpStatus.OK);
     }
 
 

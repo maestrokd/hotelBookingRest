@@ -150,7 +150,7 @@ public class BookingControllerTest {
                         .content(objectMapper.writeValueAsString(bookingDTO)))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_PLAIN))
                 .andReturn()
                 ;
     }

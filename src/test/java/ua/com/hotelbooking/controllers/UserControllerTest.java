@@ -91,7 +91,7 @@ public class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("{\"login\":\"user2\",\"password\":\"pass2\",\"name\":\"Name2\"}"))
                 .andDo(print())
-                .andExpect(status().isCreated())
+                .andExpect(status().isBadRequest())
                 .andReturn()
                 ;
         assertEquals("User creation failed", mvcResult.getResponse().getContentAsString());
@@ -105,7 +105,7 @@ public class UserControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(new UserDTO())))
                 .andDo(print())
-                .andExpect(status().isCreated())
+                .andExpect(status().isBadRequest())
                 .andReturn()
                 ;
         assertEquals("User creation failed", mvcResult.getResponse().getContentAsString());
