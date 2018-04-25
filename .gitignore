@@ -5,3 +5,6 @@
 *.war
 *.jar
 *.ear
+
+target/
+*.iml
