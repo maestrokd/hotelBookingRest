@@ -30,7 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-
 @RunWith(SpringRunner.class)
 @WebMvcTest(BookingController.class)
 public class BookingControllerTest {
@@ -65,8 +64,6 @@ public class BookingControllerTest {
 
         given(bookingServiceMock.getAllBooking()).willReturn(bookingList);
 
-        given(bookingServiceMock.getAllBookingByUser("CorrectUserName")).willReturn(bookingList);
-        given(bookingServiceMock.getAllBookingByUser("IncorrectUserName")).willReturn(new ArrayList<>());
 
         given(bookingServiceMock.getBookingTotalPrice(bookingDTO)).willReturn(300F);
         given(bookingServiceMock.getBookingTotalPrice(new BookingDTO())).willReturn(-1F);
@@ -103,29 +100,6 @@ public class BookingControllerTest {
                 ;
 
         assertEquals("Booking creation failed", mvcResult.getResponse().getContentAsString());
-    }
-
-
-    @Test
-    public void getBookingsByUser_thenOK() throws Exception {
-        MvcResult mvcResult = mockMvc
-                .perform(get("/api/users/CorrectUserName/bookings"))
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andReturn()
-                ;
-    }
-
-
-    @Test
-    public void getBookingsByUser_thenNotFound() throws Exception {
-        MvcResult mvcResult = mockMvc
-                .perform(get("/api/users/IncorrectUserName/bookings"))
-                .andDo(print())
-                .andExpect(status().isNotFound())
-                .andReturn()
-                ;
     }
 
 

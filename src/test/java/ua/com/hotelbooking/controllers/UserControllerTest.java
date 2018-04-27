@@ -12,15 +12,24 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
 import ua.com.hotelbooking.model.dto.UserDTO;
+import ua.com.hotelbooking.model.entities.Booking;
+import ua.com.hotelbooking.model.entities.Room;
 import ua.com.hotelbooking.model.entities.User;
+import ua.com.hotelbooking.model.services.BookingService;
 import ua.com.hotelbooking.model.services.UserService;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 
@@ -31,6 +40,8 @@ public class UserControllerTest {
     // Fields
     @MockBean
     private UserService userServiceMock;
+    @MockBean
+    private BookingService bookingServiceMock;
 
     @Autowired
     private MockMvc mockMvc;
@@ -52,6 +63,19 @@ public class UserControllerTest {
 //        User userMock = mock(User.class);
 //        given(userServiceMock.createUser(userDTO)).willReturn(userMock);
 //        when(userServiceMock.createUser(userDTO)).thenReturn(userMock);
+
+
+        User user102 = new User("login102", "password102", "Name102");
+        Room room = new Room(102, "newCategory", 300);
+        Date startDate = mock(Date.class);
+        Date endDate = mock(Date.class);
+        Booking booking = new Booking(user102, room, startDate, endDate);
+
+        List<Booking> bookingList = new ArrayList<>();
+        bookingList.add(booking);
+
+        given(bookingServiceMock.getAllBookingByUser("CorrectUserName")).willReturn(bookingList);
+        given(bookingServiceMock.getAllBookingByUser("IncorrectUserName")).willReturn(new ArrayList<>());
 
     }
 
@@ -110,5 +134,29 @@ public class UserControllerTest {
                 ;
         assertEquals("User creation failed", mvcResult.getResponse().getContentAsString());
     }
+
+
+    @Test
+    public void getBookingsByUser_thenOK() throws Exception {
+        MvcResult mvcResult = mockMvc
+                .perform(get("/api/users/CorrectUserName/bookings"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andReturn()
+                ;
+    }
+
+
+    @Test
+    public void getBookingsByUser_thenNotFound() throws Exception {
+        MvcResult mvcResult = mockMvc
+                .perform(get("/api/users/IncorrectUserName/bookings"))
+                .andDo(print())
+                .andExpect(status().isNotFound())
+                .andReturn()
+                ;
+    }
+
 
 }

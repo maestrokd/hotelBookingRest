@@ -17,10 +17,18 @@ import java.util.List;
 @Api(value = "bookingsgateway", description = "Booking related operations")
 public class BookingController {
 
-    @Autowired
+    // Fields
     private BookingService bookingService;
 
 
+    // Setters
+    @Autowired
+    public void setBookingService(BookingService bookingService) {
+        this.bookingService = bookingService;
+    }
+
+
+    // Methods
     /**
      * 4. User can book the room for specified days.
      */
@@ -33,22 +41,6 @@ public class BookingController {
             return new ResponseEntity<>("Booking created successfully", HttpStatus.CREATED);
         }
         return new ResponseEntity<>("Booking creation failed", HttpStatus.BAD_REQUEST);
-    }
-
-
-    /**
-     * 5. User can view his booking.
-     */
-    @RequestMapping(
-            value = "/api/users/{userlogin}/bookings"
-            , method = RequestMethod.GET
-            , headers = {"Accept=application/json"})
-    public ResponseEntity<List<Booking>> getBookingsByUser(@PathVariable("userlogin") String userlogin) {
-        List<Booking> bookingList = bookingService.getAllBookingByUser(userlogin);
-        if (!bookingList.isEmpty()) {
-            return new ResponseEntity<>(bookingList, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
 
 
